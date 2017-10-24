@@ -6,12 +6,6 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const assets = require('./webpack-assets.json');
 
-const getVendorFilename = buildAssets => [buildAssets.vendor.js];
-const pathsToClean = ['public'];
-const cleanOptions = {
-  watch: true,
-  exclude: getVendorFilename(assets),
-};
 
 const assetsPluginInstance = new AssetsPlugin({
   includeManifest: 'manifest',
@@ -40,14 +34,13 @@ const config = {
     filename: '[name].[chunkhash].js',
   },
   plugins: [
-    new CleanWebpackPlugin(pathsToClean, cleanOptions),
+  /*   */
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
       minChunks: Infinity,
     }),
     assetsPluginInstance,
   ],
-  devtool: 'source-map',
 };
 
 let mergedConfig = merge(baseConfig, config);
@@ -69,5 +62,23 @@ if (process.env.NODE_ENV === 'production') {
   };
   mergedConfig = merge(mergedConfig, prod);
 }
+
+if (process.env.NODE_ENV === 'development') {
+  const getVendorFilename = buildAssets => [buildAssets.vendor.js];
+  const pathsToClean = ['public'];
+  const cleanOptions = {
+    watch: true,
+    exclude: getVendorFilename(assets),
+  };
+
+
+  const dev = {
+    plugins: [new CleanWebpackPlugin(pathsToClean, cleanOptions)],
+    devtool: 'source-map',
+  };
+
+  mergedConfig = merge(mergedConfig, dev);
+}
+
 
 module.exports = mergedConfig;
