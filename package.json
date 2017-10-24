@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "node-react-redux server side rendering boilerplate",
   "main": "index.js",
+  "repository": "https://github.com/Babazon/ServerSideRenderingBoilerplate",
+  "author": "Babazon",
   "scripts": {
     "dev:build-client": "webpack -w --config webpack.client.config.js",
     "dev:build-server": "webpack -w --config webpack.server.config.js",
