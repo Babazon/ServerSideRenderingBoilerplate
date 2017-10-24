@@ -6,10 +6,11 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const assets = require('./webpack-assets.json');
 
+const getVendorFilename = buildAssets => [buildAssets.vendor.js];
 const pathsToClean = ['public'];
 const cleanOptions = {
   watch: true,
-  exclude: assets.vendor.js,
+  exclude: getVendorFilename(assets),
 };
 
 const assetsPluginInstance = new AssetsPlugin({
