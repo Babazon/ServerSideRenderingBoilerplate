@@ -8,7 +8,7 @@ export const configure = (initialState = INITIAL_STATE, reducers = {}, axiosInst
   const appliedMiddlewares = redux.applyMiddleware(...middlewares);
   const composeArguments = [appliedMiddlewares];
   /* eslint-disable */
-  if (global.window !== undefined) {
+  if (global.window !== undefined && global.window.navigator !== undefined) {
     composeArguments.push(
       global.window.__REDUX_DEVTOOLS_EXTENSION__ && global.window.__REDUX_DEVTOOLS_EXTENSION__(),
     );

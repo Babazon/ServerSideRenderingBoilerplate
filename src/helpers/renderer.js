@@ -15,20 +15,22 @@ export default (expressRequest, reduxStore, buildAssets, routerContext = {}) => 
       bundle: 3,
     };
 
+/* eslint-disable */
     return Object.entries(assets)
-      .sort((firstElement, secondElement) => {
-        if (assetNameWeights[firstElement[0]] < assetNameWeights[secondElement[0]]) return -1;
-        else if (assetNameWeights[firstElement[0]] === assetNameWeights[secondElement[0]]) return 0;
+      .sort(([firstElementKey, firstElementValue], [secondElementKey, secondElementValue]) => {
+        if (assetNameWeights[firstElementKey] < assetNameWeights[secondElementKey]) return -1;
+        else if (assetNameWeights[firstElementKey] === assetNameWeights[secondElementKey]) return 0;
         return 1;
       })
-      .reduce((accumulatorString, currentElement) => {
-        /* eslint-disable */
-        accumulatorString += `<script src='${currentElement[1].js}'></script>`;
-        /* eslint-enable */
-
+      .reduce((accumulator, [currentElementKey, currentElementValue]) => {
+        let accumulatorString = accumulator;
+        accumulatorString += `<script src='${currentElementValue.js}'></script>`;
         return accumulatorString;
       }, '');
   };
+
+
+  /* eslint-enable */
 
   /* eslint-disable */
   const content = renderToString(

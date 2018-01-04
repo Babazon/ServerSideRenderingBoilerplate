@@ -1,11 +1,11 @@
+const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config');
-const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const assets = require('./webpack-assets.json');
-
+const DefinePlugin = require('webpack').DefinePlugin;
 
 const assetsPluginInstance = new AssetsPlugin({
   includeManifest: 'manifest',
@@ -48,10 +48,12 @@ let mergedConfig = merge(baseConfig, config);
 if (process.env.NODE_ENV === 'production') {
   const prod = {
     plugins: [
-      new webpack.DefinePlugin({
+      new DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         },
+        _CLIENT_: true,
+        _SERVER_: false,
       }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
